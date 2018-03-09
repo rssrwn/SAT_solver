@@ -33,10 +33,17 @@ removeClauses cs v
 -- c1 and c2 must both contain variable and with opposite polarity
 resolve :: (Clause, Clause) -> Variable -> Clause
 resolve (c1, c2) v
-  | Set.member v c1 = Set.union (Set.delete v c1) (Set.delete (-v) c2)
-  | otherwise       = Set.union (Set.delete (-v) c1) (Set.delete v c2)
+  = removeTautology retClause
+  where
+    retClause
+      | Set.member v c1 = Set.union (Set.delete v c1) (Set.delete (-v) c2)
+      | otherwise       = Set.union (Set.delete (-v) c1) (Set.delete v c2)
 
-davisPutman :: Formula -> Bool
+removeTautology :: Clause -> Clause
+removeTautology c
+  = 
+
+{-davisPutman :: Formula -> Bool
 davisPutman cs = davisPutman' cs (getVariables cs)
 
 davisPutman' :: Formula -> [Variable] -> VarAssignment
@@ -49,3 +56,4 @@ davisPutman' cs (v:vs)
       resolved = Set.map ((flip resolve) v) (getPairsClauses cs v)
       addedCs = Set.union cs resolved
       newCs = removeClauses addedCs v
+-}
